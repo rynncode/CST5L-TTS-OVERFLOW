@@ -19,12 +19,12 @@ if (!$task) {
     exit();
 }
 
-$today       = date('Y-m-d');
+$today = date('Y-m-d');
 $statusLabel = ['pending' => 'Pending', 'in_progress' => 'In Progress', 'completed' => 'Completed'];
 
 // Handle quick status — POST only to prevent CSRF
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quick_status'])) {
-    $qs      = sanitize($_POST['quick_status']);
+    $qs = sanitize($_POST['quick_status']);
     $allowed = ['pending', 'in_progress', 'completed'];
     if (in_array($qs, $allowed)) {
         $conn2 = getDBConnection();
@@ -49,7 +49,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quick_status'])) {
 <body>
 <div class="app-layout">
 
-  <?php $sidebarRoot = '../'; $activeNav = ''; require_once '../includes/sidebar.php'; ?>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style="flex-shrink:0;">
+        <defs>
+          <linearGradient id="olg1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#7c5cfc"/><stop offset="100%" stop-color="#a286ff"/>
+          </linearGradient>
+          <linearGradient id="olg2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#a286ff" stop-opacity="0.85"/><stop offset="100%" stop-color="#c4aaff" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <rect x="5" y="15" width="22" height="13" rx="3.5" fill="url(#olg1)" opacity="0.12" stroke="url(#olg1)" stroke-width="1.2"/>
+        <path d="M5 18 Q9.5 13 16 16 Q22.5 19 27 14" stroke="url(#olg1)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <path d="M8 15 C8 12 9.5 10 8.5 7.5" stroke="url(#olg2)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M16 16 C16 13 17.5 11 16.5 8.5" stroke="url(#olg2)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M24 14 C24 11 25.5 9 24.5 6.5" stroke="url(#olg2)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="2" fill="url(#olg1)" opacity="0.95"/>
+      </svg>
+      OVER<span class="logo-dot">FLOW</span>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="../dashboard.php">
+        <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.2"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1.2"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1.2"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1.2"/>
+        </svg>
+        Dashboard
+      </a></li>
+      <li><a href="add.php">
+        <svg class="nav-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <rect x="1.5" y="1.5" width="13" height="13" rx="2.5"/>
+          <path d="M8 5 V11 M5 8 H11"/>
+        </svg>
+        New Task
+      </a></li>
+    </ul>
+    <div class="sidebar-user" style="margin-top:auto;">
+      <div class="avatar"><?= strtoupper(substr($_SESSION['username'], 0, 1)) ?></div>
+      <div class="user-info">
+        <div class="user-name"><?= htmlspecialchars($_SESSION['username']) ?></div>
+        <div class="user-role"><a href="../logout-transition.php" style="color:var(--text-muted);font-size:.73rem;">Sign out</a></div>
+      </div>
+    </div>
+  </aside>
 
   <div class="main-content">
     <div class="topbar">
