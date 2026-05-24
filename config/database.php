@@ -2,14 +2,15 @@
 // config/database.php
 // Database connection configuration
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');        // MySQL username
-define('DB_PASS', '');            // empty as is for the default XAMPP setup
-define('DB_NAME', 'taskflow_db');
+define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
+define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');
+define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'taskflow_db');
 
 function getDBConnection() {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, (int)DB_PORT);
+
     if ($conn->connect_error) {
         die('<div style="font-family:sans-serif;padding:2rem;background:#1a1a2e;color:#ff6b9d;min-height:100vh;display:flex;align-items:center;justify-content:center;">
             <div style="text-align:center;">
@@ -19,7 +20,7 @@ function getDBConnection() {
             </div>
         </div>');
     }
-    
+
     $conn->set_charset('utf8mb4');
     return $conn;
 }
