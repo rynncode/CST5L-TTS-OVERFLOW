@@ -1,6 +1,11 @@
 <?php
 // config/database.php
 
+// Load mysqli extension if not already loaded
+if (!extension_loaded('mysqli')) {
+    dl('mysqli.so');
+}
+
 function _env(string $key, string $default = ''): string {
     return $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key) ?: $default;
 }
