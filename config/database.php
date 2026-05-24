@@ -1,12 +1,15 @@
 <?php
 // config/database.php
-// Database connection configuration
 
-define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost');
-define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');
-define('DB_USER', getenv('MYSQLUSER')     ?: 'root');
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'taskflow_db');
+function _env(string $key, string $default = ''): string {
+    return $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key) ?: $default;
+}
+
+define('DB_HOST', _env('MYSQLHOST',     'localhost'));
+define('DB_PORT', _env('MYSQLPORT',     '3306'));
+define('DB_USER', _env('MYSQLUSER',     'root'));
+define('DB_PASS', _env('MYSQLPASSWORD', ''));
+define('DB_NAME', _env('MYSQLDATABASE', 'railway'));
 
 function getDBConnection() {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, (int)DB_PORT);
@@ -25,11 +28,8 @@ function getDBConnection() {
     return $conn;
 }
 
-// Session helper
 function requireLogin() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+    if (session_status() === PHP_SESSION_NONE) session_start();
     if (!isset($_SESSION['user_id'])) {
         header('Location: ../login.php');
         exit();
@@ -37,16 +37,13 @@ function requireLogin() {
 }
 
 function requireLoginRoot() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+    if (session_status() === PHP_SESSION_NONE) session_start();
     if (!isset($_SESSION['user_id'])) {
         header('Location: login.php');
         exit();
     }
 }
 
-// Sanitize input
 function sanitize($data) {
     return htmlspecialchars(strip_tags(trim($data)));
 }
