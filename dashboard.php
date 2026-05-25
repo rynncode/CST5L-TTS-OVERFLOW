@@ -2,16 +2,14 @@
 require_once 'config/database.php';
 requireLoginRoot();
 
-$conn     = getDBConnection();
+$pdo      = getDBConnection();
 $user_id  = $_SESSION['user_id'];
 $username = $_SESSION['username'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $tid  = (int)$_POST['toggle_id'];
-    $stmt = $conn->prepare("UPDATE tasks SET status = CASE WHEN status='completed' THEN 'pending' ELSE 'completed' END WHERE id=? AND user_id=?");
-    $stmt->bind_param("ii", $tid, $user_id);
-    $stmt->execute();
-    $stmt->close();
+    $stmt = $pdo->prepare("UPDATE tasks SET status = CASE WHEN status='completed' THEN 'pending' ELSE 'completed' END WHERE id=? AND user_id=?");
+    $stmt->execute([$tid, $user_id]);
     header('Location: dashboard.php' . ($_GET ? '?' . http_build_query($_GET) : ''));
     exit();
 }
@@ -22,32 +20,26 @@ $priority = sanitize($_GET['priority'] ?? '');
 
 $where  = ["t.user_id = ?"];
 $params = [$user_id];
-$types  = "i";
 
 if ($search !== '') {
     $where[]  = "(t.title LIKE ? OR t.description LIKE ?)";
     $like     = "%$search%";
     $params[] = $like; $params[] = $like;
-    $types   .= "ss";
 }
-if ($status !== '') { $where[] = "t.status = ?"; $params[] = $status; $types .= "s"; }
-if ($priority !== '') { $where[] = "t.priority = ?"; $params[] = $priority; $types .= "s"; }
+if ($status !== '')   { $where[] = "t.status = ?";   $params[] = $status; }
+if ($priority !== '') { $where[] = "t.priority = ?"; $params[] = $priority; }
 
 $whereSQL = implode(' AND ', $where);
-$sql = "SELECT * FROM tasks t WHERE $whereSQL ORDER BY FIELD(t.priority,'high','medium','low'), t.created_at DESC";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param($types, ...$params);
-$stmt->execute();
-$tasks = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+$sql      = "SELECT * FROM tasks t WHERE $whereSQL ORDER BY FIELD(t.priority,'high','medium','low'), t.created_at DESC";
+$stmt     = $pdo->prepare($sql);
+$stmt->execute($params);
+$tasks = $stmt->fetchAll();
 
-$statsQ = $conn->prepare("SELECT COUNT(*) AS total, SUM(status='pending') AS pending, SUM(status='in_progress') AS in_progress, SUM(status='completed') AS completed FROM tasks WHERE user_id=?");
-$statsQ->bind_param("i", $user_id);
-$statsQ->execute();
-$stats = $statsQ->get_result()->fetch_assoc();
-$statsQ->close();
-// ── Due & Late tasks widget query ──
-$dueQ = $conn->prepare("
+$statsQ = $pdo->prepare("SELECT COUNT(*) AS total, SUM(status='pending') AS pending, SUM(status='in_progress') AS in_progress, SUM(status='completed') AS completed FROM tasks WHERE user_id=?");
+$statsQ->execute([$user_id]);
+$stats = $statsQ->fetch();
+
+$dueQ = $pdo->prepare("
     SELECT id, title, description, priority, status, due_date,
            DATEDIFF(due_date, CURDATE()) AS days_left
     FROM tasks
@@ -57,11 +49,9 @@ $dueQ = $conn->prepare("
     ORDER BY due_date ASC
     LIMIT 10
 ");
-$dueQ->bind_param("i", $user_id);
-$dueQ->execute();
-$dueTasks = $dueQ->get_result()->fetch_all(MYSQLI_ASSOC);
-$dueQ->close();
-$conn->close();
+$dueQ->execute([$user_id]);
+$dueTasks = $dueQ->fetchAll();
+
 
 $today         = date('Y-m-d');
 $overdueTasks  = array_filter($dueTasks, fn($t) => $t['due_date'] < $today);

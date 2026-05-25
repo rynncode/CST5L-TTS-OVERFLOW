@@ -10,17 +10,25 @@ define('DB_PASS', _env('MYSQLPASSWORD', ''));
 define('DB_NAME', _env('MYSQLDATABASE', 'railway'));
 
 function getDBConnection() {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, (int)DB_PORT);
-    if ($conn->connect_error) {
+    static $conn = null;
+    if ($conn !== null) return $conn;
+
+    $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+
+    try {
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        return $pdo;
+    } catch (PDOException $e) {
         die('<div style="font-family:sans-serif;padding:2rem;background:#1a1a2e;color:#ff6b9d;min-height:100vh;display:flex;align-items:center;justify-content:center;">
             <div style="text-align:center;">
                 <h2 style="font-size:1.5rem;margin-bottom:1rem;">Database Connection Failed</h2>
-                <p style="color:#aaa;">Error: ' . htmlspecialchars($conn->connect_error) . '</p>
+                <p style="color:#888;font-size:0.85rem;margin-top:0.5rem;">Error: ' . htmlspecialchars($e->getMessage()) . '</p>
             </div>
         </div>');
     }
-    $conn->set_charset('utf8mb4');
-    return $conn;
 }
 
 function requireLogin() {
