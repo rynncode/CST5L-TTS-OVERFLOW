@@ -12,11 +12,4 @@ COPY . /var/www/html/
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Apache config to allow .htaccess
-RUN echo '<Directory /var/www/html>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/app.conf \
-    && a2enconf app
-
 EXPOSE 80
