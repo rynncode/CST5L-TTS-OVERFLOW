@@ -1,10 +1,9 @@
-# Overflow — Task Tracking System
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/9acae6cc-5481-49da-b842-f617f06491d8" /># Overflow — Task Tracking System
 
 A dark-themed, database-driven task management web application built with PHP and MySQL. Users can register, log in, and manage their personal tasks through a clean dashboard with full CRUD functionality.
 
-> **Live Demo:** [your-railway-url.up.railway.app](https://your-railway-url.up.railway.app)  
+> **Live Demo:** https://overflow.up.railway.app
 > **GitHub:** [github.com/rynncode/CST5L-TTS-OVERFLOW](https://github.com/rynncode/CST5L-TTS-OVERFLOW)  
-> **Video Presentation:** [add your link here]
 
 ---
 
@@ -36,10 +35,10 @@ Overflow is a personal task tracker that allows users to create and manage tasks
 | Database | MySQL 8 |
 | Frontend | Vanilla CSS, Vanilla JS, Inline SVG |
 | Fonts | Space Grotesk, Bebas Neue (Google Fonts) |
-| Deployment | Railway (app + database) |
+| Deployment | Railway (app(tableplus) + database) |
 | Version Control | Git + GitHub |
 
-No external frameworks or libraries — everything is built from scratch.
+No external frameworks or libraries
 
 ---
 
@@ -117,10 +116,6 @@ CST5L-TTS-OVERFLOW/
 
 The app is deployed on Railway with a MySQL database. No local setup needed — just visit the live link above.
 
-**Default demo account:**
-- Username: `demo`
-- Password: `password123`
-
 ---
 
 ## Dynamic Features
@@ -134,11 +129,24 @@ The app is deployed on Railway with a MySQL database. No local setup needed — 
 ---
 
 ## Screenshots
+LOGIN PAGE
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/79d9d984-f046-4d54-8593-e1d20ff1a1d3" />
+REGISTER PAGE
+<img width="1901" height="933" alt="image" src="https://github.com/user-attachments/assets/fd1b5420-316f-4f9d-a30a-340134567b4c" />
+DASHBOARD
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/4dee8cad-213f-420b-899b-e001cf5f4067" />
+ADD/EDIT TASK
+<img width="1173" height="936" alt="image" src="https://github.com/user-attachments/assets/3493e52d-2137-404c-ba49-11cc430196bf" />
+TASK DETAIL
+<img width="1254" height="931" alt="image" src="https://github.com/user-attachments/assets/fddfac70-8641-413c-a81b-18c41739e1c0" />
+LOGIN TRANSITION
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/1a7f3c3c-2c5a-4607-ad48-ed243f7a4ad0" />
+<img width="1919" height="931" alt="image" src="https://github.com/user-attachments/assets/93ee4c82-0755-4450-a209-da15bc77453d" />
 
-> *(Add screenshots here)*
+LOGOUT TRANSITION
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/12c11e6b-c631-4fde-a0d6-8576c8d9d9b4" />
+
+
+
 
 ---
-
-## Video Presentation
-
-> *(Add Google Drive link here)*
