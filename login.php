@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id']  = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email']    = $user['email'];
+            if (!empty($_POST['remember'])) {
+                session_set_cookie_params(60 * 60 * 24 * 30); // 30 days
+                session_regenerate_id(true);
+            }
             header('Location: transition.php');
             exit();
         } else {
@@ -114,8 +118,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input type="password" name="password" class="form-control"
-            placeholder="Enter your password" required>
+          <div style="position:relative;">
+            <input type="password" name="password" id="password" class="form-control"
+              placeholder="Enter your password" required style="padding-right:2.8rem;">
+            <button type="button" onclick="togglePassword('password','eye-login')"
+              style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-dim);padding:0;display:flex;align-items:center;">
+              <svg id="eye-login" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;margin-top:.25rem;">
+          <input type="checkbox" name="remember" id="remember" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer;">
+          <label for="remember" style="font-size:.83rem;color:var(--text-dim);cursor:pointer;user-select:none;">Remember me</label>
         </div>
         <button type="submit" class="btn btn-primary btn-full" style="margin-top:.75rem;letter-spacing:.08em;">
           SIGN IN →
@@ -128,5 +144,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 
+<script>
+function togglePassword(fieldId, iconId) {
+  const field = document.getElementById(fieldId);
+  const icon  = document.getElementById(iconId);
+  const show  = field.type === 'password';
+  field.type  = show ? 'text' : 'password';
+  icon.innerHTML = show
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+</script>
 </body>
 </html>
