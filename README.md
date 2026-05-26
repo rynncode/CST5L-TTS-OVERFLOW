@@ -1,5 +1,3 @@
-<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/9acae6cc-5481-49da-b842-f617f06491d8" /># Overflow — Task Tracking System
-
 A dark-themed, database-driven task management web application built with PHP and MySQL. Users can register, log in, and manage their personal tasks through a clean dashboard with full CRUD functionality.
 
 > **Live Demo:** https://overflow.up.railway.app
