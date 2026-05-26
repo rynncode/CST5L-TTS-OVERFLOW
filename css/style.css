@@ -556,9 +556,9 @@ input[type="date"] {
   color-scheme: dark;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) brightness(1.5);
+  filter: invert(1);
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 1;
 }
 input[type="date"]::-webkit-datetime-edit {
   color: var(--text);
