@@ -550,19 +550,30 @@ tbody td { padding: .9rem 1.2rem; font-size: .87rem; color: var(--text); vertica
   .stats-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Date input visibility fix ───────────────────────────────── */
+/*  Date input  */
 input[type="date"] {
-  color: var(--text);
+  background: #111827;
+  color: white;
+  border: 1px solid #374151;
+  padding: 10px;
+  border-radius: 8px;
   color-scheme: dark;
 }
+
+/* Calendar icon */
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
+  filter: brightness(0) invert(1);
   opacity: 1;
+  cursor: pointer;
 }
+
+/* Text inside input */
 input[type="date"]::-webkit-datetime-edit {
-  color: var(--text);
+  color: white;
 }
-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-  color: var(--text);
+
+input[type="date"]::-webkit-datetime-edit-year-field,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field {
+  color: white;
 }
