@@ -549,3 +549,20 @@ tbody td { padding: .9rem 1.2rem; font-size: .87rem; color: var(--text); vertica
 @media (max-width: 520px) {
   .stats-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Date input visibility fix ───────────────────────────────── */
+input[type="date"] {
+  color: var(--text);
+  color-scheme: dark;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.5);
+  cursor: pointer;
+  opacity: 0.7;
+}
+input[type="date"]::-webkit-datetime-edit {
+  color: var(--text);
+}
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  color: var(--text);
+}
